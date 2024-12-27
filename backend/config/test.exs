@@ -1,32 +1,38 @@
 use Mix.Config
 
-# Configure your database for testing
+# Configure the database for the test environment
+# Uses Ecto's SQL sandbox for isolated database tests
 config :train_food_delivery, TrainFoodDelivery.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "train_food_delivery_test",
-  hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox
+  username: "postgres",                # Database username
+  password: "postgres",                # Database password
+  database: "train_food_delivery_test", # Test database name
+  hostname: "localhost",               # Database host
+  pool: Ecto.Adapters.SQL.Sandbox      # Pooling for test isolation
 
-# We don't run a server during test. If one is required, you can enable the server option below.
+# Web endpoint configuration
+# Server is disabled during testing as tests typically don't need a running server
 config :train_food_delivery, TrainFoodDeliveryWeb.Endpoint,
-  http: [port: 4002],
-  server: false
+  http: [port: 4002],  # HTTP port for the web server (if enabled)
+  server: false        # Disable the server during tests
 
-# Set test log level to warn to reduce log noise during tests
+# Logger configuration
+# Sets log level to :warn to minimize log output during tests
 config :logger, level: :warn
 
-# Disable Redis for caching in test
+# Redis configuration for caching
+# Disables Redis in the test environment to avoid external dependencies
 config :redix,
-  host: "localhost",
-  port: 6379,
-  enabled: false
+  host: "localhost",  # Redis host
+  port: 6379,         # Redis port
+  enabled: false      # Disable Redis in tests
 
-# Mock SMS service for testing
+# Mock SMS service configuration
+# Uses a mock service for testing SMS delivery to avoid real SMS charges
 config :train_food_delivery, :sms_service,
-  service: "mock_sms",
-  api_key: "test_key"
+  service: "mock_sms", # Mock SMS service identifier
+  api_key: "test_key"  # Test API key for the mock service
 
-# Use a test adapter for email delivery (e.g., Local or Test)
+# Email delivery configuration
+# Uses a test adapter (Swoosh.Adapters.Test) to avoid sending real emails
 config :train_food_delivery, TrainFoodDelivery.Mailer,
-  adapter: Swoosh.Adapters.Test
+  adapter: Swoosh.Adapters.Test # Test adapter for email delivery
