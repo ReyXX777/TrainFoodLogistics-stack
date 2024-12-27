@@ -18,7 +18,12 @@ defmodule TrainFoodDelivery.MixProject do
   def application do
     [
       mod: {TrainFoodDelivery.Application, []},
-      extra_applications: [:logger, :runtime_tools, :redix, :swoosh]
+      extra_applications: [
+        :logger,
+        :runtime_tools,
+        :redix,        # Redis support
+        :swoosh        # Email support
+      ]
     ]
   end
 
@@ -32,28 +37,28 @@ defmodule TrainFoodDelivery.MixProject do
       {:phoenix, "~> 1.5.9"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.6"},
-      {:postgrex, ">= 0.0.0"},
+      {:postgrex, ">= 0.0.0"},                   # PostgreSQL driver
       {:phoenix_live_reload, "~> 1.3", only: :dev},
       {:phoenix_live_view, "~> 0.15.0"},
-      {:floki, ">= 0.30.0", only: :test},
+      {:floki, ">= 0.30.0", only: :test},        # HTML parsing in tests
       {:phoenix_html, "~> 2.14"},
       {:phoenix_live_dashboard, "~> 0.4"},
-      {:esbuild, "~> 0.2", runtime: Mix.env() == :dev},
+      {:esbuild, "~> 0.2", runtime: Mix.env() == :dev}, # Asset bundling
       {:telemetry_metrics, "~> 0.6"},
       {:telemetry_poller, "~> 0.5"},
       {:gettext, "~> 0.18"},
-      {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"},
-      {:redix, ">= 0.0.0"},               # Redis for caching
-      {:swoosh, "~> 1.3"},                # Email service (e.g., for order confirmations)
-      {:phoenix_swoosh, "~> 0.3"},        # Integration between Phoenix and Swoosh
-      {:twilio, "~> 0.1.2"},              # Twilio for SMS notifications (or any other SMS provider)
-      {:distillery, "~> 2.1", runtime: false}, # Production releases
-      {:ex_machina, "~> 2.7", only: :test},   # Test factories
-      {:mock, "~> 0.3.5", only: :test},   # Mocking for tests
-      {:ecto_psql_extras, "~> 0.6"},      # Ecto PostgreSQL tools
-      {:phoenix_pubsub, "~> 2.0"},        # PubSub system for channels
-      {:cowboy, "~> 2.8"}                 # HTTP server
+      {:jason, "~> 1.2"},                        # JSON parsing
+      {:plug_cowboy, "~> 2.5"},                 # Web server
+      {:redix, ">= 0.0.0"},                     # Redis for caching
+      {:swoosh, "~> 1.3"},                      # Email service
+      {:phoenix_swoosh, "~> 0.3"},              # Phoenix integration for Swoosh
+      {:twilio, "~> 0.1.2"},                    # Twilio for SMS
+      {:distillery, "~> 2.1", runtime: false},  # Deployment and releases
+      {:ex_machina, "~> 2.7", only: :test},     # Test data factories
+      {:mock, "~> 0.3.5", only: :test},         # Mocking for tests
+      {:ecto_psql_extras, "~> 0.6"},            # PostgreSQL introspection tools
+      {:phoenix_pubsub, "~> 2.0"},              # PubSub for real-time features
+      {:cowboy, "~> 2.8"}                       # HTTP server
     ]
   end
 
