@@ -1,0 +1,60 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: backend.Dockerfile
+    container_name: train_food_backend
+    environment:
+      MIX_ENV: prod
+      DATABASE_URL: "ecto://postgres:password@db:5432/train_food_delivery_prod"
+      SECRET_KEY_BASE: "your_secret_key_base"
+      REDIS_URL: "redis://redis:6379/0"
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./backend:/app
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: frontend.Dockerfile
+    container_name: train_food_frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+    restart: always
+
+  db:
+    image: postgres:12
+    container_name: train_food_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: train_food_delivery_prod
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    restart: always
+
+  redis:
+    image: redis:alpine
+    container_name: train_food_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: always
+
+volumes:
+  pg_data:
+  redis_data:
