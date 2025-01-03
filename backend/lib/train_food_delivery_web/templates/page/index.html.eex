@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Train Food Logistics</title>
+  <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>">
+</head>
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="<%= Routes.page_path(@conn, :index) %>">Home</a></li>
+        <li><a href="<%= Routes.page_path(@conn, :about) %>">About</a></li>
+        <li><a href="<%= Routes.session_path(@conn, :new) %>">Login</a></li>
+        <li><a href="<%= Routes.registration_path(@conn, :new) %>">Register</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Welcome to Train Food Logistics</h1>
+      <p>Your go-to solution for food delivery logistics for trains. We make sure that food reaches the right place at the right time.</p>
+    </section>
+
+    <section class="services">
+      <h2>Our Services</h2>
+      <ul>
+        <li><strong>Real-Time Tracking:</strong> Stay updated with the status of food orders in real time.</li>
+        <li><strong>Efficient Logistics:</strong> We ensure timely delivery of food to train stations and trains.</li>
+        <li><strong>Reliable Support:</strong> 24/7 customer service to assist with any delivery-related issues.</li>
+      </ul>
+    </section>
+
+    <section class="cta">
+      <h2>Start Using Our Service</h2>
+      <p>Sign up now and experience seamless food logistics for your train services!</p>
+      <a href="<%= Routes.registration_path(@conn, :new) %>" class="cta-button">Get Started</a>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; <%= Date.utc_today().year %> Train Food Logistics. All rights reserved.</p>
+  </footer>
+
+  <script src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+</body>
+</html>
