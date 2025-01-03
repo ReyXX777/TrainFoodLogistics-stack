@@ -1,51 +1,55 @@
-# This file is responsible for configuring your application
-# and its dependencies with the help of the Mix.Config module.
-
 use Mix.Config
 
 # General application configuration
 config :train_food_logistics,
-  ecto_repos: [TrainFoodLogistics.Repo],  # Specifies the Ecto repository for database operations
+  ecto_repos: [TrainFoodLogistics.Repo]
 
 # Configures the endpoint
 config :train_food_logistics, TrainFoodLogisticsWeb.Endpoint,
-  url: [host: "localhost"],               # Base URL for the application
-  secret_key_base: "your_secret_key",     # Secret key for encrypting session data
+  url: [host: "localhost"],
+  secret_key_base: System.get_env("SECRET_KEY_BASE") || "fallback_secret_key",  # Retrieve from environment variable
   render_errors: [view: TrainFoodLogisticsWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: TrainFoodLogistics.PubSub,
-  live_view: [signing_salt: "your_signing_salt"] # Salt for LiveView session signing
+  live_view: [signing_salt: System.get_env("SIGNING_SALT") || "fallback_signing_salt"] # Retrieve from environment variable
 
 # Configures Elixir's Logger
 config :logger, :console,
-  format: "$time $metadata[$level] $message\n", # Logger output format
-  metadata: [:request_id]                       # Metadata to include in logs
+  format: "$time $metadata[$level] $message\n",
+  metadata: [:request_id],
+  level: case Mix.env() do
+    :prod -> :info
+    :dev -> :debug
+    :test -> :warn
+  end
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
 # Configure the database
 config :train_food_logistics, TrainFoodLogistics.Repo,
-  username: "postgres",               # Database username
-  password: "postgres",               # Database password
-  database: "train_food_logistics_dev", # Development database name
-  hostname: "localhost",              # Database host
+  username: System.get_env("DB_USERNAME") || "postgres",  # Fetch from environment
+  password: System.get_env("DB_PASSWORD") || "postgres",  # Fetch from environment
+  database: "train_food_logistics_dev",
+  hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
-  pool_size: 10                       # Number of database connections in the pool
+  pool_size: 10
 
 # Redis configuration (if caching is used)
 config :redix,
-  host: "localhost", # Redis server hostname
-  port: 6379         # Redis server port
+  host: "localhost",
+  port: 6379,
+  db: 0,                    # Use default Redis database (can be changed)
+  password: System.get_env("REDIS_PASSWORD") # Secure Redis access with password
 
 # Email configuration
 config :train_food_logistics, TrainFoodLogistics.Mailer,
-  adapter: Swoosh.Adapters.Local # Local adapter for development
+  adapter: Swoosh.Adapters.Local
 
 # SMS Service configuration
 config :train_food_logistics, :sms_service,
-  service: "twilio",  # SMS service provider
-  account_sid: "your_account_sid", # Twilio account SID
-  auth_token: "your_auth_token",   # Twilio auth token
+  service: "twilio",
+  account_sid: System.get_env("TWILIO_ACCOUNT_SID"),
+  auth_token: System.get_env("TWILIO_AUTH_TOKEN")
 
 # Import environment-specific config (dev, test, prod)
 import_config "#{Mix.env()}.exs"
