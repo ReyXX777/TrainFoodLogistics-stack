@@ -2,6 +2,8 @@ defmodule TrainFoodDelivery.Orders.Order do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @valid_statuses ["pending", "processed", "shipped", "delivered"]
+
   schema "orders" do
     field :item_name, :string
     field :quantity, :integer
@@ -16,5 +18,26 @@ defmodule TrainFoodDelivery.Orders.Order do
     order
     |> cast(attrs, [:item_name, :quantity, :status])
     |> validate_required([:item_name, :quantity])
+    |> validate_inclusion(:status, @valid_statuses)
+    |> validate_quantity()
+  end
+
+  # Validation for quantity to ensure it is a positive integer
+  defp validate_quantity(changeset) do
+    validate_number(changeset, :quantity, greater_than: 0)
+  end
+
+  # Optionally, a function to calculate ETA based on order details (virtual field)
+  def calculate_eta(order) do
+    # Example logic: ETA is calculated based on the item type and quantity
+    base_eta = case order.item_name do
+      "Pizza" -> 30  # 30 minutes for pizza
+      "Burger" -> 20  # 20 minutes for burgers
+      "Sushi" -> 40  # 40 minutes for sushi
+      _ -> 25  # Default for other items
+    end
+
+    eta = base_eta + (order.quantity * 2)  # Add 2 minutes per item as a simple example
+    eta
   end
 end
