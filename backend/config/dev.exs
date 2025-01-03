@@ -2,32 +2,36 @@ use Mix.Config
 
 # Configure the database for the development environment
 config :train_food_logistics, TrainFoodLogistics.Repo,
-  username: "postgres",               # Database username
-  password: "postgres",               # Database password
-  database: "train_food_logistics_dev", # Development database name
-  hostname: "localhost",              # Database host
+  username: System.get_env("DB_USERNAME") || "postgres",    # Fetch from environment variable or fallback
+  password: System.get_env("DB_PASSWORD") || "postgres",    # Fetch from environment variable or fallback
+  database: "train_food_logistics_dev",
+  hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
-  pool_size: 10                       # Number of connections in the pool
+  pool_size: 10
 
 # Configure the endpoint for development
 config :train_food_logistics, TrainFoodLogisticsWeb.Endpoint,
-  http: [port: 4000],                 # HTTP port for the development server
-  debug_errors: true,                 # Enables debug errors for better error reporting
-  code_reloader: true,                # Enables code reloading during development
-  check_origin: false,                # Disables origin checking for local development
-  watchers: [                         # Configures watchers to run external tools
-    node: ["node_modules/webpack/bin/webpack.js", "--mode", "development",
-      cd: Path.expand("../assets", __DIR__)]
+  http: [port: 4000],
+  debug_errors: true,
+  code_reloader: true,
+  check_origin: false,
+  watchers: [
+    node: [
+      "node_modules/webpack/bin/webpack.js", 
+      "--mode", 
+      "development",
+      cd: Path.expand("../assets", __DIR__)
+    ]
   ]
 
 # Configures live reload for static and templates
 config :train_food_logistics, TrainFoodLogisticsWeb.Endpoint,
   live_reload: [
     patterns: [
-      ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$", # Watch for changes in static assets
-      ~r"priv/gettext/.*(po)$",                         # Watch for changes in gettext files
-      ~r"lib/train_food_logistics_web/(live|views)/.*(ex)$", # Watch for changes in live views and templates
-      ~r"lib/train_food_logistics_web/templates/.*(eex)$"    # Watch for changes in EEx templates
+      ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$", 
+      ~r"priv/gettext/.*(po)$",                         
+      ~r"lib/train_food_logistics_web/(live|views)/.*(ex)$", 
+      ~r"lib/train_food_logistics_web/templates/.*(eex)$"
     ]
   ]
 
@@ -45,7 +49,8 @@ config :train_food_logistics, dev_routes: true
 # Redis configuration for caching in development
 config :redix,
   host: "localhost",
-  port: 6379
+  port: 6379,
+  password: System.get_env("REDIS_PASSWORD") # Ensure Redis authentication for production
 
 # Email delivery configuration for development
 config :train_food_logistics, TrainFoodLogistics.Mailer,
@@ -53,6 +58,6 @@ config :train_food_logistics, TrainFoodLogistics.Mailer,
 
 # SMS service configuration for development
 config :train_food_logistics, :sms_service,
-  service: "twilio",            # SMS service provider
-  account_sid: "your_dev_sid",  # Development Twilio SID
-  auth_token: "your_dev_token"  # Development Twilio auth token
+  service: "twilio",
+  account_sid: System.get_env("TWILIO_ACCOUNT_SID") || "your_dev_sid",  # Retrieve from environment or use fallback
+  auth_token: System.get_env("TWILIO_AUTH_TOKEN") || "your_dev_token"   # Retrieve from environment or use fallback
