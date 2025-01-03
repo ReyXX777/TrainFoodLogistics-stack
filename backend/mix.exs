@@ -29,6 +29,7 @@ defmodule TrainFoodDelivery.MixProject do
 
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(:dev), do: ["lib", "dev"]
   defp elixirc_paths(_), do: ["lib"]
 
   # Returns the list of dependencies for the project.
@@ -48,7 +49,7 @@ defmodule TrainFoodDelivery.MixProject do
       {:telemetry_poller, "~> 0.5"},
       {:gettext, "~> 0.18"},
       {:jason, "~> 1.2"},                        # JSON parsing
-      {:plug_cowboy, "~> 2.5"},                 # Web server
+      {:plug_cowboy, "~> 2.5"},                  # Web server
       {:redix, ">= 0.0.0"},                     # Redis for caching
       {:swoosh, "~> 1.3"},                      # Email service
       {:phoenix_swoosh, "~> 0.3"},              # Phoenix integration for Swoosh
