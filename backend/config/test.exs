@@ -1,3 +1,4 @@
+# config/test.exs
 use Mix.Config
 
 # Configure the database for the test environment
@@ -52,3 +53,25 @@ config :train_food_delivery, :external_services,
       failure_response: %{"status" => "undelivered"}
     }
   }
+
+# Payment gateway configuration for tests
+# Uses a mock payment gateway to simulate transactions
+config :train_food_delivery, :payment_gateway,
+  provider: "mock_gateway",
+  success_response: %{"status" => "success", "transaction_id" => "test_txn_12345"},
+  failure_response: %{"status" => "failure", "error_code" => "insufficient_funds"}
+
+# Analytics service configuration for tests
+# Mocking analytics service to avoid real data collection
+config :train_food_delivery, :analytics_service,
+  provider: "mock_analytics",
+  mock_events: [
+    %{"event" => "user_signup", "status" => "recorded"},
+    %{"event" => "order_placed", "status" => "recorded"}
+  ]
+
+# Push notifications configuration for tests
+# Disables push notifications during testing
+config :train_food_delivery, :push_notifications,
+  enabled: false,  # Disable push notifications to prevent external dependencies
+  mock_response: %{"status" => "disabled"}
