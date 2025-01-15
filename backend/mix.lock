@@ -19,5 +19,8 @@
   "floki" => {:hex, :floki, "0.30.0", "sha512-VERSION_HASH", [:mix], "hexpm", [:test]},
   "distillery" => {:hex, :distillery, "2.1.1", "sha512-VERSION_HASH", [:mix], "hexpm", [:runtime]},
   "mock" => {:hex, :mock, "0.3.5", "sha512-VERSION_HASH", [:mix], "hexpm", [:test]},
-  "ex_machina" => {:hex, :ex_machina, "2.7.0", "sha512-VERSION_HASH", [:mix], "hexpm", [:test]}
+  "ex_machina" => {:hex, :ex_machina, "2.7.0", "sha512-VERSION_HASH", [:mix], "hexpm", [:test]},
+  "phoenix_aws" => {:hex, :phoenix_aws, "1.0.0", "sha512-VERSION_HASH", [:mix], "hexpm", []}, # Added for AWS S3 integration
+  "joken" => {:hex, :joken, "2.3.0", "sha512-VERSION_HASH", [:mix], "hexpm", []},  # Added for JWT token handling
+  "ecto_mnesia" => {:hex, :ecto_mnesia, "0.3.0", "sha512-VERSION_HASH", [:mix], "hexpm", []}  # Added for distributed database handling
 }
