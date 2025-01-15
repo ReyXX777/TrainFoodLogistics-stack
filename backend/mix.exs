@@ -22,7 +22,10 @@ defmodule TrainFoodDelivery.MixProject do
         :logger,
         :runtime_tools,
         :redix,        # Redis support
-        :swoosh        # Email support
+        :swoosh,       # Email support
+        :twilio,       # Twilio for SMS notifications
+        :phoenix_pubsub, # PubSub for real-time updates
+        :cowboy        # HTTP server for handling requests
       ]
     ]
   end
