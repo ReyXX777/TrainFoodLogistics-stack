@@ -116,4 +116,3 @@ config :train_food_logistics, :sms_service,
 # Runtime configuration for releases
 config :train_food_logistics, TrainFoodLogisticsWeb.Endpoint,
   server: true                                                   # Ensure the server is started in production
-
