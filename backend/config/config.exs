@@ -1,3 +1,4 @@
+# config/config.exs
 use Mix.Config
 
 # General application configuration
@@ -50,6 +51,23 @@ config :train_food_logistics, :sms_service,
   service: "twilio",
   account_sid: System.get_env("TWILIO_ACCOUNT_SID"),
   auth_token: System.get_env("TWILIO_AUTH_TOKEN")
+
+# Payment Gateway Configuration
+config :train_food_logistics, :payment_gateway,
+  provider: "stripe",
+  public_key: System.get_env("STRIPE_PUBLIC_KEY"),
+  secret_key: System.get_env("STRIPE_SECRET_KEY")
+
+# Analytics Service Configuration
+config :train_food_logistics, :analytics_service,
+  provider: "google_analytics",
+  tracking_id: System.get_env("GA_TRACKING_ID")
+
+# Push Notifications Configuration
+config :train_food_logistics, :push_notifications,
+  provider: "firebase",
+  api_key: System.get_env("FIREBASE_API_KEY"),
+  project_id: System.get_env("FIREBASE_PROJECT_ID")
 
 # Import environment-specific config (dev, test, prod)
 import_config "#{Mix.env()}.exs"
