@@ -1,3 +1,4 @@
+# config/prod.exs
 use Mix.Config
 
 # Configure the database for the production environment
@@ -18,7 +19,7 @@ config :train_food_logistics, TrainFoodLogisticsWeb.Endpoint,
   url: [
     scheme: "https",                                            # Use HTTPS in production
     host: System.get_env("HOST") || "example.com",              # Public-facing hostname
-    port: 443                                                     # HTTPS port
+    port: 443                                                   # HTTPS port
   ],
   cache_static_manifest: "priv/static/cache_manifest.json",      # Cache static files
   secret_key_base: System.get_env("SECRET_KEY_BASE"),            # Secret key for session encryption
@@ -56,6 +57,23 @@ config :train_food_logistics, :sms_service,
   service: "twilio",                                             # SMS service provider
   account_sid: System.get_env("TWILIO_ACCOUNT_SID"),             # Twilio account SID
   auth_token: System.get_env("TWILIO_AUTH_TOKEN")                # Twilio auth token
+
+# Payment gateway configuration
+config :train_food_logistics, :payment_gateway,
+  provider: "stripe",
+  public_key: System.get_env("STRIPE_PUBLIC_KEY"),
+  secret_key: System.get_env("STRIPE_SECRET_KEY")
+
+# Analytics service configuration
+config :train_food_logistics, :analytics_service,
+  provider: "datadog",
+  api_key: System.get_env("DATADOG_API_KEY")
+
+# Push notifications configuration
+config :train_food_logistics, :push_notifications,
+  provider: "firebase",
+  api_key: System.get_env("FIREBASE_API_KEY"),
+  project_id: System.get_env("FIREBASE_PROJECT_ID")
 
 # Runtime configuration for releases
 config :train_food_logistics, TrainFoodLogisticsWeb.Endpoint,
