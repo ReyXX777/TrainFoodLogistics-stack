@@ -15,6 +15,9 @@
         <li><a href="<%= Routes.page_path(@conn, :about) %>">About</a></li>
         <li><a href="<%= Routes.session_path(@conn, :new) %>">Login</a></li>
         <li><a href="<%= Routes.registration_path(@conn, :new) %>">Register</a></li>
+        <li><a href="<%= Routes.page_path(@conn, :contact) %>">Contact</a></li>
+        <li><a href="<%= Routes.page_path(@conn, :faq) %>">FAQ</a></li>
+        <li><a href="<%= Routes.page_path(@conn, :terms_and_conditions) %>">Terms & Conditions</a></li>
       </ul>
     </nav>
   </header>
@@ -31,6 +34,9 @@
         <li><strong>Real-Time Tracking:</strong> Stay updated with the status of food orders in real time.</li>
         <li><strong>Efficient Logistics:</strong> We ensure timely delivery of food to train stations and trains.</li>
         <li><strong>Reliable Support:</strong> 24/7 customer service to assist with any delivery-related issues.</li>
+        <li><strong>Custom Orders:</strong> Ability to request specific food items tailored to the needs of passengers.</li>
+        <li><strong>Sustainability:</strong> We prioritize eco-friendly packaging and waste reduction.</li>
+        <li><strong>Global Expansion:</strong> Our services are expanding to international routes.</li>
       </ul>
     </section>
 
@@ -43,6 +49,10 @@
 
   <footer>
     <p>&copy; <%= Date.utc_today().year %> Train Food Logistics. All rights reserved.</p>
+    <ul>
+      <li><a href="<%= Routes.page_path(@conn, :privacy_policy) %>">Privacy Policy</a></li>
+      <li><a href="<%= Routes.page_path(@conn, :careers) %>">Careers</a></li>
+    </ul>
   </footer>
 
   <script src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
