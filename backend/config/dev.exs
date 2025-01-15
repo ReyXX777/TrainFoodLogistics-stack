@@ -1,3 +1,4 @@
+# config/dev.exs
 use Mix.Config
 
 # Configure the database for the development environment
@@ -61,3 +62,20 @@ config :train_food_logistics, :sms_service,
   service: "twilio",
   account_sid: System.get_env("TWILIO_ACCOUNT_SID") || "your_dev_sid",  # Retrieve from environment or use fallback
   auth_token: System.get_env("TWILIO_AUTH_TOKEN") || "your_dev_token"   # Retrieve from environment or use fallback
+
+# Payment gateway configuration
+config :train_food_logistics, :payment_gateway,
+  provider: "stripe",
+  public_key: System.get_env("STRIPE_PUBLIC_KEY") || "dev_public_key",
+  secret_key: System.get_env("STRIPE_SECRET_KEY") || "dev_secret_key"
+
+# Analytics service configuration
+config :train_food_logistics, :analytics_service,
+  provider: "mixpanel",
+  api_key: System.get_env("MIXPANEL_API_KEY") || "dev_mixpanel_api_key"
+
+# Push notifications configuration
+config :train_food_logistics, :push_notifications,
+  provider: "firebase",
+  api_key: System.get_env("FIREBASE_API_KEY") || "dev_firebase_api_key",
+  project_id: System.get_env("FIREBASE_PROJECT_ID") || "dev_firebase_project_id"
