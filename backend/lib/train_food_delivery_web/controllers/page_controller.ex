@@ -11,6 +11,21 @@ defmodule TrainFoodDeliveryWeb.PageController do
     render(conn, "about.html")
   end
 
+  # Render the contact page
+  def contact(conn, _params) do
+    render(conn, "contact.html")
+  end
+
+  # Render the FAQ page
+  def faq(conn, _params) do
+    render(conn, "faq.html")
+  end
+
+  # Render the terms and conditions page
+  def terms_and_conditions(conn, _params) do
+    render(conn, "terms_and_conditions.html")
+  end
+
   # Handle a 404 error for pages not found
   def not_found(conn, _params) do
     conn
