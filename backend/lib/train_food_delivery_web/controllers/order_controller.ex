@@ -5,7 +5,7 @@ defmodule TrainFoodDeliveryWeb.OrderController do
 
   # List all orders
   def index(conn, _params) do
-    orders = Orders.list_orders() # Fetch all orders from the database
+    orders = Orders.list_orders()
     render(conn, "index.html", orders: orders)
   end
 
@@ -13,13 +13,11 @@ defmodule TrainFoodDeliveryWeb.OrderController do
   def show(conn, %{"id" => id}) do
     case Orders.get_order(id) do
       nil ->
-        # If the order is not found, return a 404 error
         conn
         |> put_flash(:error, "Order not found.")
         |> redirect(to: Routes.order_path(conn, :index))
 
       order ->
-        # If the order is found, render the order details
         render(conn, "show.html", order: order)
     end
   end
@@ -28,13 +26,11 @@ defmodule TrainFoodDeliveryWeb.OrderController do
   def create(conn, %{"order" => order_params}) do
     case Orders.create_order(order_params) do
       {:ok, order} ->
-        # If the order is created successfully, redirect to the show page
         conn
         |> put_flash(:info, "Order created successfully.")
         |> redirect(to: Routes.order_path(conn, :show, order))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        # If there is an error in the changeset, re-render the form with errors
         render(conn, "new.html", changeset: changeset)
     end
   end
@@ -49,13 +45,11 @@ defmodule TrainFoodDeliveryWeb.OrderController do
   def edit(conn, %{"id" => id}) do
     case Orders.get_order(id) do
       nil ->
-        # If the order is not found, return a 404 error
         conn
         |> put_flash(:error, "Order not found.")
         |> redirect(to: Routes.order_path(conn, :index))
 
       order ->
-        # If the order is found, render the edit form with the current order
         changeset = Orders.change_order(order)
         render(conn, "edit.html", order: order, changeset: changeset)
     end
@@ -65,7 +59,6 @@ defmodule TrainFoodDeliveryWeb.OrderController do
   def update(conn, %{"id" => id, "order" => order_params}) do
     case Orders.get_order(id) do
       nil ->
-        # If the order is not found, return a 404 error
         conn
         |> put_flash(:error, "Order not found.")
         |> redirect(to: Routes.order_path(conn, :index))
@@ -73,13 +66,11 @@ defmodule TrainFoodDeliveryWeb.OrderController do
       order ->
         case Orders.update_order(order, order_params) do
           {:ok, order} ->
-            # If the order is updated successfully, redirect to the show page
             conn
             |> put_flash(:info, "Order updated successfully.")
             |> redirect(to: Routes.order_path(conn, :show, order))
 
           {:error, %Ecto.Changeset{} = changeset} ->
-            # If there is an error in the changeset, re-render the form with errors
             render(conn, "edit.html", order: order, changeset: changeset)
         end
     end
@@ -89,7 +80,6 @@ defmodule TrainFoodDeliveryWeb.OrderController do
   def delete(conn, %{"id" => id}) do
     case Orders.get_order(id) do
       nil ->
-        # If the order is not found, return a 404 error
         conn
         |> put_flash(:error, "Order not found.")
         |> redirect(to: Routes.order_path(conn, :index))
@@ -97,17 +87,45 @@ defmodule TrainFoodDeliveryWeb.OrderController do
       order ->
         case Orders.delete_order(order) do
           {:ok, _order} ->
-            # If the order is deleted successfully, redirect to the index page
             conn
             |> put_flash(:info, "Order deleted successfully.")
             |> redirect(to: Routes.order_path(conn, :index))
 
           {:error, _changeset} ->
-            # Handle any error during deletion (if any)
             conn
             |> put_flash(:error, "Failed to delete the order.")
             |> redirect(to: Routes.order_path(conn, :index))
         end
     end
+  end
+
+  # Search orders by status
+  def search_by_status(conn, %{"status" => status}) do
+    orders = Orders.list_orders_by_status(status)
+    render(conn, "index.html", orders: orders)
+  end
+
+  # Bulk delete orders
+  def bulk_delete(conn, %{"ids" => ids}) do
+    case Orders.bulk_delete_orders(ids) do
+      {:ok, _count} ->
+        conn
+        |> put_flash(:info, "Selected orders deleted successfully.")
+        |> redirect(to: Routes.order_path(conn, :index))
+
+      {:error, _reason} ->
+        conn
+        |> put_flash(:error, "Failed to delete selected orders.")
+        |> redirect(to: Routes.order_path(conn, :index))
+    end
+  end
+
+  # Export orders to CSV
+  def export_to_csv(conn, _params) do
+    csv_data = Orders.export_orders_to_csv()
+    conn
+    |> put_resp_content_type("text/csv")
+    |> put_resp_header("content-disposition", "attachment; filename=\"orders.csv\"")
+    |> send_resp(200, csv_data)
   end
 end
