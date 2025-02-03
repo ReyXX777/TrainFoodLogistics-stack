@@ -18,7 +18,7 @@
         <li><a href="<%= Routes.page_path(@conn, :contact) %>">Contact</a></li>
         <li><a href="<%= Routes.page_path(@conn, :faq) %>">FAQ</a></li>
         <li><a href="<%= Routes.page_path(@conn, :terms_and_conditions) %>">Terms & Conditions</a></li>
-      </ul>
+        <li><a href="<%= Routes.page_path(@conn, :menu) %>">Menu</a></li>  <li><a href="<%= Routes.page_path(@conn, :promotions) %>">Promotions</a></li> </ul>
     </nav>
   </header>
 
@@ -39,6 +39,17 @@
         <li><strong>Global Expansion:</strong> Our services are expanding to international routes.</li>
       </ul>
     </section>
+
+        <section class="testimonials">
+            <h2>Testimonials</h2>
+            <div class="testimonial">
+                <p>"Excellent service! The food arrived on time and was delicious." - John Doe</p>
+            </div>
+            <div class="testimonial">
+                <p>"I highly recommend Train Food Logistics. They are reliable and efficient." - Jane Smith</p>
+            </div>
+            </section>
+
 
     <section class="cta">
       <h2>Start Using Our Service</h2>
