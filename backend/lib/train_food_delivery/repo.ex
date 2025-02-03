@@ -1,11 +1,10 @@
 defmodule TrainFoodDelivery.Repo do
   use Ecto.Repo,
-    otp_app: :train_food_logistics,  # The application name, used for configuration
-    adapter: Ecto.Adapters.Postgres   # Specifying the database adapter (Postgres in this case)
+    otp_app: :train_food_delivery,
+    adapter: Ecto.Adapters.Postgres
 
-  # Optional: Configure the repository's logging behavior (can be adjusted per environment)
+  # Optional: Configure the repository's logging behavior
   def init(_type, config) do
-    # Dynamically adjust configurations (e.g., from environment variables or other sources)
     {:ok, Keyword.put(config, :log, :debug)}
   end
 
@@ -26,6 +25,29 @@ defmodule TrainFoodDelivery.Repo do
 
   # Function to retrieve connection pool size
   def connection_pool_size do
-    Application.get_env(:train_food_logistics, __MODULE__)[:pool_size] || 10
+    Application.get_env(:train_food_delivery, __MODULE__)[:pool_size] || 10
   end
+
+  # Function to run migrations
+  def run_migrations do
+    Ecto.Migrator.run(:up, Repo, Repo.migrations_path())
+  end
+
+  # Function to seed the database with initial data
+  def seed_database do
+    # Example: Insert initial users
+    case insert_user(%{email: "test@example.com", username: "testuser", password: "password"}) do
+      {:ok, _} -> IO.puts("User seeded successfully")
+      {:error, reason} -> IO.puts("Error seeding user: #{inspect(reason)}")
+    end
+
+    # Add more seeding logic as needed
+  end
+
+  defp insert_user(attrs) do
+      %TrainFoodDelivery.Accounts.User{}
+      |> TrainFoodDelivery.Accounts.User.changeset(attrs)
+      |> Repo.insert()
+  end
+
 end
