@@ -79,3 +79,15 @@ config :train_food_logistics, :push_notifications,
   provider: "firebase",
   api_key: System.get_env("FIREBASE_API_KEY") || "dev_firebase_api_key",
   project_id: System.get_env("FIREBASE_PROJECT_ID") || "dev_firebase_project_id"
+
+# File storage configuration for development
+config :train_food_logistics, :file_storage,
+  provider: "local",
+  directory: "priv/static/uploads"
+
+# Background job processing configuration for development
+config :train_food_logistics, :background_jobs,
+  provider: "exq",
+  host: "localhost",
+  port: 6379,
+  namespace: "train_food_logistics_dev"
