@@ -5,7 +5,7 @@ defmodule TrainFoodDeliveryWeb.OrderChannel do
   def join("orders:lobby", _payload, socket) do
     # Add optional authentication or logging logic here
     IO.puts("Client joined the orders:lobby")
-    {:ok, socket}
+    {:ok, assign(socket, user_id: socket.id)} # Assign a user ID to the socket
   end
 
   # Handle receiving a new order event
@@ -13,8 +13,12 @@ defmodule TrainFoodDeliveryWeb.OrderChannel do
     # Perform order validation or additional processing if needed
     IO.puts("New order received: #{inspect(order)}")
 
+    # Add user ID to the order data
+    order_with_user = Map.merge(order, %{user_id: socket.assigns.user_id})
+
+
     # Broadcast the order update to all connected clients in the 'orders:lobby' topic
-    broadcast!(socket, "order_update", %{order: order})
+    broadcast!(socket, "order_update", %{order: order_with_user})
 
     {:noreply, socket}
   end
@@ -57,9 +61,20 @@ defmodule TrainFoodDeliveryWeb.OrderChannel do
     {:noreply, socket}
   end
 
+    # Handle chat messages
+  def handle_in("chat_message", %{"message" => message}, socket) do
+    # Broadcast the message to all connected clients
+    broadcast!(socket, "new_chat_message", %{
+      user_id: socket.assigns.user_id,  # Include user ID
+      message: message
+    })
+    {:noreply, socket}
+  end
+
+
   # Handle when a client leaves the channel
   def terminate(_reason, socket) do
-    IO.puts("Client left the orders:lobby")
+    IO.puts("Client #{socket.assigns.user_id} left the orders:lobby") # Log user ID on disconnect
     :ok
   end
 end
