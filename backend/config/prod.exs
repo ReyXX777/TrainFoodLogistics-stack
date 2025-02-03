@@ -75,6 +75,21 @@ config :train_food_logistics, :push_notifications,
   api_key: System.get_env("FIREBASE_API_KEY"),
   project_id: System.get_env("FIREBASE_PROJECT_ID")
 
+# File storage configuration for production
+config :train_food_logistics, :file_storage,
+  provider: "aws_s3",
+  access_key_id: System.get_env("AWS_ACCESS_KEY_ID"),
+  secret_access_key: System.get_env("AWS_SECRET_ACCESS_KEY"),
+  region: System.get_env("AWS_REGION"),
+  bucket: System.get_env("AWS_BUCKET")
+
+# Background job processing configuration for production
+config :train_food_logistics, :background_jobs,
+  provider: "oban",
+  repo: TrainFoodLogistics.Repo,
+  queues: [default: 10, mailers: 20, analytics: 5],
+  plugins: [Oban.Plugins.Pruner]
+
 # Runtime configuration for releases
 config :train_food_logistics, TrainFoodLogisticsWeb.Endpoint,
   server: true                                                   # Ensure the server is started in production
